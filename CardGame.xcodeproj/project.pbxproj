@@ -17,6 +17,8 @@
 		F53C3AD52C4D856F008BD45E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53C3AD42C4D856F008BD45E /* GameScene.swift */; };
 		F53C3AD72C4D86A7008BD45E /* SpriteKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53C3AD62C4D86A7008BD45E /* SpriteKitView.swift */; };
 		F53C3AD92C4D8951008BD45E /* SettingsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53C3AD82C4D8951008BD45E /* SettingsScene.swift */; };
+		F53C3ADB2C4FBEEC008BD45E /* GameSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53C3ADA2C4FBEEC008BD45E /* GameSettings.swift */; };
+		F53C3ADF2C4FC08B008BD45E /* cardMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F53C3ADE2C4FC08B008BD45E /* cardMusic.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,8 @@
 		F53C3AD42C4D856F008BD45E /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		F53C3AD62C4D86A7008BD45E /* SpriteKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteKitView.swift; sourceTree = "<group>"; };
 		F53C3AD82C4D8951008BD45E /* SettingsScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScene.swift; sourceTree = "<group>"; };
+		F53C3ADA2C4FBEEC008BD45E /* GameSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettings.swift; sourceTree = "<group>"; };
+		F53C3ADE2C4FC08B008BD45E /* cardMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = cardMusic.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,13 +67,12 @@
 		F53C3ABF2C4D81A8008BD45E /* CardGame */ = {
 			isa = PBXGroup;
 			children = (
+				F53C3ADD2C4FBFF6008BD45E /* Resources */,
+				F53C3ADC2C4FBEF6008BD45E /* Views */,
 				F53C3AC02C4D81A8008BD45E /* CardGameApp.swift */,
-				F53C3AC22C4D81A8008BD45E /* ContentView.swift */,
-				F53C3AD22C4D84F9008BD45E /* MenuScene.swift */,
-				F53C3AD42C4D856F008BD45E /* GameScene.swift */,
 				F53C3AD82C4D8951008BD45E /* SettingsScene.swift */,
 				F53C3ACE2C4D81E0008BD45E /* LoadingScene.sks */,
-				F53C3AD02C4D83B6008BD45E /* LoadingScene.swift */,
+				F53C3ADA2C4FBEEC008BD45E /* GameSettings.swift */,
 				F53C3AD62C4D86A7008BD45E /* SpriteKitView.swift */,
 				F53C3AC42C4D81AB008BD45E /* Assets.xcassets */,
 				F53C3AC62C4D81AB008BD45E /* Preview Content */,
@@ -83,6 +86,25 @@
 				F53C3AC72C4D81AB008BD45E /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		F53C3ADC2C4FBEF6008BD45E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F53C3AD42C4D856F008BD45E /* GameScene.swift */,
+				F53C3AC22C4D81A8008BD45E /* ContentView.swift */,
+				F53C3AD22C4D84F9008BD45E /* MenuScene.swift */,
+				F53C3AD02C4D83B6008BD45E /* LoadingScene.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F53C3ADD2C4FBFF6008BD45E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F53C3ADE2C4FC08B008BD45E /* cardMusic.mp3 */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -145,6 +167,7 @@
 			files = (
 				F53C3ACF2C4D81E0008BD45E /* LoadingScene.sks in Resources */,
 				F53C3AC82C4D81AB008BD45E /* Preview Assets.xcassets in Resources */,
+				F53C3ADF2C4FC08B008BD45E /* cardMusic.mp3 in Resources */,
 				F53C3AC52C4D81AB008BD45E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -156,6 +179,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F53C3ADB2C4FBEEC008BD45E /* GameSettings.swift in Sources */,
 				F53C3AD72C4D86A7008BD45E /* SpriteKitView.swift in Sources */,
 				F53C3AD92C4D8951008BD45E /* SettingsScene.swift in Sources */,
 				F53C3AD52C4D856F008BD45E /* GameScene.swift in Sources */,
@@ -299,11 +323,13 @@
 				DEVELOPMENT_TEAM = YDM4QC6KDH;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.card-games";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -328,11 +354,13 @@
 				DEVELOPMENT_TEAM = YDM4QC6KDH;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.card-games";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

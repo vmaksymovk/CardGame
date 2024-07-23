@@ -6,6 +6,7 @@ struct CardGameApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .statusBarHidden()
         }
     }
 }

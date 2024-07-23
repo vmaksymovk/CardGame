@@ -5,25 +5,36 @@ import SafariServices
 import SwiftUI
 
 class MenuScene: SKScene {
-    
+
     override func didMove(to view: SKView) {
-        // Установка фона BG_1
+        // Добавляем фон
         let background = SKSpriteNode(imageNamed: "BG_1")
         background.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
         background.size = self.size
         background.zPosition = -1
         addChild(background)
         
-        let playButton = SKLabelNode(text: "Play Now")
+        // Добавляем изображение "Menu_icon"
+        let menuIcon = SKSpriteNode(imageNamed: "Menu_icon")
+        menuIcon.size = CGSize(width: 300, height: 300)
+        menuIcon.position = CGPoint(x: self.frame.midX, y: self.frame.midY + 100) // Позиционируем изображение немного выше центра
+        menuIcon.zPosition = 1
+        addChild(menuIcon)
+        
+        // Добавляем кнопку "Play Now"
+        let playButton = SKSpriteNode(imageNamed: "PlayButton1")
         playButton.name = "playButton"
-        playButton.fontSize = 45
-        playButton.position = CGPoint(x: self.frame.midX, y: self.frame.midY + 50)
+        playButton.size = CGSize(width: 300, height: 70) // Установите размер в соответствии с вашим изображением
+        playButton.position = CGPoint(x: self.frame.midX, y: self.frame.midY - 100) // Позиционируем кнопку под изображением
+        playButton.zPosition = 1
         addChild(playButton)
         
-        let privacyButton = SKLabelNode(text: "Privacy Policy")
+        // Добавляем кнопку "Privacy Policy"
+        let privacyButton = SKSpriteNode(imageNamed: "PrivatePolicy")
         privacyButton.name = "privacyButton"
-        privacyButton.fontSize = 45
-        privacyButton.position = CGPoint(x: self.frame.midX, y: self.frame.midY - 50)
+        privacyButton.size = CGSize(width: 250, height: 60) // Установите размер в соответствии с вашим изображением
+        privacyButton.position = CGPoint(x: self.frame.midX, y: self.frame.midY - 200) // Позиционируем кнопку ниже кнопки "Play Now"
+        privacyButton.zPosition = 1
         addChild(privacyButton)
     }
 
@@ -34,12 +45,10 @@ class MenuScene: SKScene {
             
             for node in nodesArray {
                 if node.name == "playButton" {
-                    // Переход к игре
                     let gameScene = GameScene(size: self.size)
                     let transition = SKTransition.fade(withDuration: 1)
                     self.view?.presentScene(gameScene, transition: transition)
                 } else if node.name == "privacyButton" {
-                    // Открытие Privacy Policy
                     if let viewController = self.view?.window?.rootViewController {
                         let safariVC = SFSafariViewController(url: URL(string: "https://www.linkedin.com/in/vladyslav-maksymov/")!)
                         viewController.present(safariVC, animated: true, completion: nil)
