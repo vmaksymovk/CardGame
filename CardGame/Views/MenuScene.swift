@@ -11,16 +11,20 @@ class MenuScene: SKScene {
         let background = SKSpriteNode(imageNamed: "BG_1")
         background.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
         background.size = self.size
-        background.zPosition = -1
+        background.zPosition = -2
         addChild(background)
         
+        let starsBackground = SKSpriteNode(imageNamed: "Stars")
+        starsBackground.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
+        starsBackground.size = self.size
+        starsBackground.zPosition = -1
+        addChild(starsBackground)
         
         let menuIcon = SKSpriteNode(imageNamed: "Menu_icon")
         menuIcon.size = CGSize(width: 300, height: 300)
         menuIcon.position = CGPoint(x: self.frame.midX, y: self.frame.midY + 100)
         menuIcon.zPosition = 1
         addChild(menuIcon)
-        
         
         let playButton = SKSpriteNode(imageNamed: "PlayButton1")
         playButton.name = "playButton"
@@ -29,13 +33,18 @@ class MenuScene: SKScene {
         playButton.zPosition = 1
         addChild(playButton)
         
-        
         let privacyButton = SKSpriteNode(imageNamed: "PrivatePolicy")
         privacyButton.name = "privacyButton"
         privacyButton.size = CGSize(width: 250, height: 60)
         privacyButton.position = CGPoint(x: self.frame.midX, y: self.frame.midY - 200)
         privacyButton.zPosition = 1
         addChild(privacyButton)
+        
+        let cherry = SKSpriteNode(imageNamed: "Cherry")
+        cherry.size = CGSize(width: 150, height: 150)
+        cherry.position = CGPoint(x: self.frame.maxX - cherry.size.width/2 - 30, y: self.frame.maxY - cherry.size.height/2 - 120)
+        cherry.zPosition = 2
+        addChild(cherry)
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

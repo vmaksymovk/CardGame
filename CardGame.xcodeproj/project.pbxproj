@@ -70,7 +70,6 @@
 				F53C3ADD2C4FBFF6008BD45E /* Resources */,
 				F53C3ADC2C4FBEF6008BD45E /* Views */,
 				F53C3AC02C4D81A8008BD45E /* CardGameApp.swift */,
-				F53C3AD82C4D8951008BD45E /* SettingsScene.swift */,
 				F53C3ACE2C4D81E0008BD45E /* LoadingScene.sks */,
 				F53C3ADA2C4FBEEC008BD45E /* GameSettings.swift */,
 				F53C3AD62C4D86A7008BD45E /* SpriteKitView.swift */,
@@ -95,6 +94,7 @@
 				F53C3AC22C4D81A8008BD45E /* ContentView.swift */,
 				F53C3AD22C4D84F9008BD45E /* MenuScene.swift */,
 				F53C3AD02C4D83B6008BD45E /* LoadingScene.swift */,
+				F53C3AD82C4D8951008BD45E /* SettingsScene.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
