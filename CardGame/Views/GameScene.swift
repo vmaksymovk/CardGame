@@ -268,7 +268,9 @@ class GameScene: SKScene {
         let allCardsFlipped = cards.allSatisfy { $0.texture != cardBackTexture }
         
         if allCardsFlipped {
+            timer?.invalidate()
             showWinScreen()
+            
         }
     }
     
@@ -285,7 +287,7 @@ class GameScene: SKScene {
         let youWinNode = SKSpriteNode(imageNamed: "Youwin")
         youWinNode.position = CGPoint(x: self.frame.midX, y: self.frame.midY + 170)
         youWinNode.zPosition = 10
-        youWinNode.setScale(0.3)
+        youWinNode.setScale(0.25)
         addChild(youWinNode)
         
         let movesFrame = SKSpriteNode(imageNamed: "Frame_2")
