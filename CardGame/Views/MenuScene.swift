@@ -5,7 +5,7 @@ import SafariServices
 import SwiftUI
 
 class MenuScene: SKScene {
-
+    
     override func didMove(to view: SKView) {
         
         let background = SKSpriteNode(imageNamed: "BG_1")
@@ -46,7 +46,7 @@ class MenuScene: SKScene {
         cherry.zPosition = 2
         addChild(cherry)
     }
-
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
             let location = touch.location(in: self)
