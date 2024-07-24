@@ -70,11 +70,10 @@ override func didMove(to view: SKView) {
             for node in nodesArray {
                 if node.name == "resumeButton" {
                     if let gameScene = previousScene {
-                        gameScene.startTime = Date().addingTimeInterval(-gameScene.elapsedTime)
-                        gameScene.startTimer()
-                        gameScene.isInteractionEnabled = true
+                        gameScene.resumeGame()
                         let transition = SKTransition.fade(withDuration: 0.5)
                         self.view?.presentScene(gameScene, transition: transition)
+                        gameScene.resumeFromSettings()
                     }
                 }
                 else if node.name == "mainMenuButton" {
@@ -103,4 +102,8 @@ override func didMove(to view: SKView) {
             }
         }
     }
+
+
+
+
 }

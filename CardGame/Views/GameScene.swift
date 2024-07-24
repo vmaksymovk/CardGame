@@ -152,15 +152,28 @@ class GameScene: SKScene {
         }
     }
     
+    func resumeFromSettings() {
+        if let savedState = savedState {
+            restoreState(savedState)
+        }
+        resumeGame()
+    }
+    
     func pauseGame() {
-        isInteractionEnabled = false
-        elapsedTime += Date().timeIntervalSince(startTime!)
+        if let startTime = startTime {
+            elapsedTime += Date().timeIntervalSince(startTime)
+        }
         timer?.invalidate()
+        self.startTime = nil
+        isInteractionEnabled = false
+
         if let pauseButton = self.childNode(withName: "pauseButton") as? SKSpriteNode {
             pauseButton.texture = SKTexture(imageNamed: "Play")
-            pauseButton.size = CGSize(width: pauseButton.size.width * 1.5, height: pauseButton.size.height * 1.5)
+            pauseButton.size = CGSize(width: 75, height: 75)
         }
     }
+
+
     
     
     func resumeGame() {
@@ -169,11 +182,13 @@ class GameScene: SKScene {
         isInteractionEnabled = true
         if let pauseButton = self.childNode(withName: "pauseButton") as? SKSpriteNode {
             pauseButton.texture = SKTexture(imageNamed: "Pause")
-            pauseButton.size = CGSize(width: pauseButton.size.width / 1.5, height: pauseButton.size.height / 1.5)
+            pauseButton.size = CGSize(width: 50, height: 50)
         }
     }
-    
-    
+
+
+
+
     func goToMainMenu() {
         stopBackgroundMusic()
         let menuScene = MenuScene(size: self.size)
@@ -384,43 +399,57 @@ class GameScene: SKScene {
     }
     
     func openSettings() {
+        pauseGame()
         saveState()
         let settingsScene = SettingsScene(size: self.size)
         settingsScene.scaleMode = .aspectFill
         settingsScene.previousScene = self
         let transition = SKTransition.fade(withDuration: 1.0)
         self.view?.presentScene(settingsScene, transition: transition)
-        timer?.invalidate()
     }
+
+
+
     
     func saveState() {
-        savedState = GameState(cards: cards.map { $0.copy() as! SKSpriteNode }, selectedCards: selectedCards.map { $0.copy() as! SKSpriteNode }, moves: moves, startTime: startTime, elapsedTime: elapsedTime + Date().timeIntervalSince(startTime!), isInteractionEnabled: isInteractionEnabled)
+        if let startTime = startTime {
+            elapsedTime += Date().timeIntervalSince(startTime)
+        }
+        savedState = GameState(cards: cards.map { $0.copy() as! SKSpriteNode }, selectedCards: selectedCards.map { $0.copy() as! SKSpriteNode }, moves: moves, elapsedTime: elapsedTime, isInteractionEnabled: isInteractionEnabled)
         timer?.invalidate()
+        startTime = nil
     }
-    
+
     func restoreState(_ state: GameState) {
         for card in cards {
             card.removeFromParent()
         }
-        
+
         cards = state.cards
         selectedCards = state.selectedCards
         moves = state.moves
-        startTime = state.startTime
         elapsedTime = state.elapsedTime
+        startTime = Date() 
         movesLabel.text = "Moves: \(moves)"
-        timerLabel.text = String(format: "Time: %d:%02d", Int(state.elapsedTime) / 60, Int(state.elapsedTime) % 60)
+        let minutes = Int(elapsedTime) / 60
+        let seconds = Int(elapsedTime) % 60
+        timerLabel.text = String(format: "Time: %d:%02d", minutes, seconds)
         isInteractionEnabled = state.isInteractionEnabled
-        
+
         for card in cards {
             addChild(card)
         }
-        
+
         setupHUD()
         setupSettingsButton()
         startTimer()
         playBackgroundMusic()
     }
+
+
+
+
+
 }
 
 struct GameState {
