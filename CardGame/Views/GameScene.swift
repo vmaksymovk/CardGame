@@ -8,6 +8,7 @@ class GameScene: SKScene {
     var moves: Int = 0
     var timer: Timer?
     var startTime: Date?
+    var elapsedTime: TimeInterval = 0
     var movesLabel: SKLabelNode!
     var timerLabel: SKLabelNode!
     var cardBackTexture: SKTexture = SKTexture(imageNamed: "Slot")
@@ -30,10 +31,36 @@ class GameScene: SKScene {
             setupCards()
             setupHUD()
             setupSettingsButton()
+            setupControlButtons()
             startTime = Date()
             startTimer()
             playBackgroundMusic()
         }
+    }
+
+    func setupControlButtons() {
+        let buttonSize = CGSize(width: 55, height: 55)
+        
+        let pauseButton = SKSpriteNode(imageNamed: "Pause")
+        pauseButton.size = buttonSize
+        pauseButton.position = CGPoint(x: self.frame.minX + buttonSize.width, y: self.frame.minY + buttonSize.height + 20)
+        pauseButton.name = "pauseButton"
+        pauseButton.zPosition = 10
+        addChild(pauseButton)
+        
+        let backButton = SKSpriteNode(imageNamed: "Left")
+        backButton.size = buttonSize
+        backButton.position = CGPoint(x: self.frame.midX, y: self.frame.minY + buttonSize.height + 20)
+        backButton.name = "backButton"
+        backButton.zPosition = 10
+        addChild(backButton)
+        
+        let replayButton = SKSpriteNode(imageNamed: "Replay")
+        replayButton.size = buttonSize
+        replayButton.position = CGPoint(x: self.frame.maxX - buttonSize.width, y: self.frame.minY + buttonSize.height + 20)
+        replayButton.name = "replayButton"
+        replayButton.zPosition = 10
+        addChild(replayButton)
     }
 
     func setupCards() {
@@ -110,16 +137,65 @@ class GameScene: SKScene {
 
     @objc func updateTimer() {
         if let startTime = startTime {
-            let elapsedTime = Date().timeIntervalSince(startTime)
-            let minutes = Int(elapsedTime) / 60
-            let seconds = Int(elapsedTime) % 60
+            let currentTime = Date().timeIntervalSince(startTime) + elapsedTime
+            let minutes = Int(currentTime) / 60
+            let seconds = Int(currentTime) % 60
             timerLabel.text = String(format: "Time: %d:%02d", minutes, seconds)
         }
     }
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if !isInteractionEnabled { return }
+    func togglePause() {
+        if isInteractionEnabled {
+            pauseGame()
+        } else {
+            resumeGame()
+        }
+    }
 
+    func pauseGame() {
+        isInteractionEnabled = false
+        elapsedTime += Date().timeIntervalSince(startTime!)
+        timer?.invalidate()
+        if let pauseButton = self.childNode(withName: "pauseButton") as? SKSpriteNode {
+            pauseButton.texture = SKTexture(imageNamed: "Play")
+            pauseButton.size = CGSize(width: pauseButton.size.width * 1.5, height: pauseButton.size.height * 1.5)
+        }
+    }
+
+
+    func resumeGame() {
+        startTime = Date()
+        startTimer()
+        isInteractionEnabled = true
+        if let pauseButton = self.childNode(withName: "pauseButton") as? SKSpriteNode {
+            pauseButton.texture = SKTexture(imageNamed: "Pause")
+            pauseButton.size = CGSize(width: pauseButton.size.width / 1.5, height: pauseButton.size.height / 1.5)
+        }
+    }
+
+
+    func goToMainMenu() {
+        stopBackgroundMusic()
+        let menuScene = MenuScene(size: self.size)
+        menuScene.scaleMode = .aspectFill
+        let transition = SKTransition.fade(withDuration: 1.0)
+        self.view?.presentScene(menuScene, transition: transition)
+    }
+
+    func replayGame() {
+        stopBackgroundMusic()
+        let newGameScene = GameScene(size: self.size)
+        newGameScene.scaleMode = .aspectFill
+        let transition = SKTransition.fade(withDuration: 1.0)
+        self.view?.presentScene(newGameScene, transition: transition)
+    }
+
+    func stopBackgroundMusic() {
+        backgroundMusicPlayer?.stop()
+        backgroundMusicPlayer = nil
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
             let location = touch.location(in: self)
             let nodesAtLocation = nodes(at: location)
@@ -129,7 +205,18 @@ class GameScene: SKScene {
                     saveState()
                     openSettings()
                     return
+                } else if node.name == "pauseButton" {
+                    togglePause()
+                    return
+                } else if node.name == "backButton" {
+                    goToMainMenu()
+                    return
+                } else if node.name == "replayButton" {
+                    replayGame()
+                    return
                 }
+
+                if !isInteractionEnabled { continue }
 
                 if let card = node as? SKSpriteNode, card.texture == cardBackTexture, !selectedCards.contains(card) {
                     let cardName = card.name!
@@ -171,9 +258,9 @@ class GameScene: SKScene {
     }
 
     func showWinScreen() {
-        let elapsedTime = Date().timeIntervalSince(startTime!)
-        let minutes = Int(elapsedTime) / 60
-        let seconds = Int(elapsedTime) % 60
+        let totalElapsedTime = elapsedTime + Date().timeIntervalSince(startTime!)
+        let minutes = Int(totalElapsedTime) / 60
+        let seconds = Int(totalElapsedTime) % 60
 
         let overlay = SKSpriteNode(color: UIColor.black.withAlphaComponent(0.7), size: self.size)
         overlay.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
@@ -275,11 +362,6 @@ class GameScene: SKScene {
         }
     }
 
-    func stopBackgroundMusic() {
-        backgroundMusicPlayer?.stop()
-        print("Background music stopped")
-    }
-
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
             let location = touch.location(in: self)
@@ -308,21 +390,15 @@ class GameScene: SKScene {
         settingsScene.previousScene = self
         let transition = SKTransition.fade(withDuration: 1.0)
         self.view?.presentScene(settingsScene, transition: transition)
-    }
-
-    func resumeGame() {
-        startTimer()
-        isInteractionEnabled = true
+        timer?.invalidate() 
     }
 
     func saveState() {
-        
-        savedState = GameState(cards: cards.map { $0.copy() as! SKSpriteNode }, selectedCards: selectedCards.map { $0.copy() as! SKSpriteNode }, moves: moves, startTime: startTime, elapsedTime: Date().timeIntervalSince(startTime!), isInteractionEnabled: isInteractionEnabled)
+        savedState = GameState(cards: cards.map { $0.copy() as! SKSpriteNode }, selectedCards: selectedCards.map { $0.copy() as! SKSpriteNode }, moves: moves, startTime: startTime, elapsedTime: elapsedTime + Date().timeIntervalSince(startTime!), isInteractionEnabled: isInteractionEnabled)
         timer?.invalidate()
     }
 
     func restoreState(_ state: GameState) {
-        
         for card in cards {
             card.removeFromParent()
         }
@@ -331,6 +407,7 @@ class GameScene: SKScene {
         selectedCards = state.selectedCards
         moves = state.moves
         startTime = state.startTime
+        elapsedTime = state.elapsedTime
         movesLabel.text = "Moves: \(moves)"
         timerLabel.text = String(format: "Time: %d:%02d", Int(state.elapsedTime) / 60, Int(state.elapsedTime) % 60)
         isInteractionEnabled = state.isInteractionEnabled
